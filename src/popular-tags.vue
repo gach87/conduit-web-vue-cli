@@ -19,11 +19,11 @@
 
 <script>
 export default {
-  name: "PopularTags",
+  name: "TagsPopular",
   props: ["tags"],
   methods: {
     select(tag) {
-      this.$emit("tag-selected", tag);
+      this.$emit("select", tag);
     }
   }
 };

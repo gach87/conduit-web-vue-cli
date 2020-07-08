@@ -18,7 +18,7 @@ export default {
   props: ["feeds"],
   methods: {
     select(feed) {
-      return this.$emit("feed-selected", feed);
+      return this.$emit("select", feed);
     }
   }
 };
