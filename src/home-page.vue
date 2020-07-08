@@ -9,7 +9,11 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-9">
-          <ArticlesFeed v-bind:feeds="feeds" v-on:select="onFeedSelected($event)"></ArticlesFeed>
+          <ArticlesFeed
+            v-bind:feeds="feeds"
+            v-bind:selected="selectedFeed"
+            v-on:select="onFeedSelected($event)"
+          ></ArticlesFeed>
 
           <ArticlesList v-bind:articles="articles">
             <ArticleListItem
@@ -61,35 +65,42 @@ export default {
     return {
       tags: undefined,
       feeds: [
-        { id: "personal", name: "Your feed", selected: false, isTag: false },
-        { id: "all", name: "Global Feed", selected: true, isTag: false }
+        { id: "personal", name: "Your feed" },
+        { id: "all", name: "Global Feed" }
       ],
+      selectedFeed: "all",
       articles: undefined
     };
   },
   created() {
     HomePageService.fetchTags().then(tags => (this.tags = tags));
-    HomePageService.fetchArticles({ limit: 10, offset: 0 }).then(
-      articles => (this.articles = articles)
-    );
+    HomePageService.fetchArticles({
+      limit: 10,
+      offset: 0,
+      feed: { id: "all", name: "Global Feed" }
+    }).then(articles => (this.articles = articles));
   },
   methods: {
     onTagSelected(tag) {
       const tagFeed = {
         id: tag.toLowerCase(),
-        name: "#" + tag,
-        selected: true,
-        isTag: true
+        name: "#" + tag
       };
-
-      this.feeds = this.feeds
-        .map(feed => Object.assign(feed, { selected: false }))
-        .concat([tagFeed]);
+      this.feeds[2] = tagFeed;
+      this.selectedFeed = tagFeed.id;
+      HomePageService.fetchArticles({
+        limit: 10,
+        offset: 0,
+        feed: tagFeed
+      }).then(articles => (this.articles = articles));
     },
     onFeedSelected(selectedFeed) {
-      this.feeds = this.feeds.map(feed =>
-        Object.assign(feed, { selected: feed.id === selectedFeed.id })
-      );
+      this.selectedFeed = selectedFeed.id;
+      HomePageService.fetchArticles({
+        limit: 10,
+        offset: 0,
+        feed: selectedFeed
+      }).then(articles => (this.articles = articles));
     },
     onFavoritedArticle(article) {
       console.log(article);

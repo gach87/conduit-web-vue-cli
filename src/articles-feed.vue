@@ -4,7 +4,7 @@
       <li v-for="feed in feeds" :key="feed.id" class="nav-item">
         <a
           class="nav-link"
-          v-bind:class="{'active': feed.selected}"
+          v-bind:class="{'active': feed.id===selected}"
           v-on:click="select(feed)"
         >{{feed.name}}</a>
       </li>
@@ -15,7 +15,7 @@
 <script>
 export default {
   name: "ArticlesFeed",
-  props: ["feeds"],
+  props: ["feeds", "selected"],
   methods: {
     select(feed) {
       return this.$emit("select", feed);
