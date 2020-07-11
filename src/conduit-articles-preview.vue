@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "ArticlePreview",
+  name: "ConduitArticlePreview",
   props: ["article"]
 };
 </script>

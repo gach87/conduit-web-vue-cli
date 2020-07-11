@@ -49,7 +49,7 @@
 
 <script>
 export default {
-  name: "ConduitHeader",
+  name: "ConduitLayoutHeader",
   data:()=>({
     isAuthenticated:false
   })

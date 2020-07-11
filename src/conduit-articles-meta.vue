@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "ArticleMeta",
+  name: "ConduitArticleMeta",
   props: ["article"]
 };
 </script>

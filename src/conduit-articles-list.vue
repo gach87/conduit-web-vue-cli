@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "ArticlesList",
+  name: "ConduitArticlesList",
   props: ["articles"]
 };
 </script>

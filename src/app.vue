@@ -1,23 +1,22 @@
 <template>
   <div id="app">
-    <ConduitHeader/>
+    <ConduitLayoutHeader />
     <router-view />
-    <ConduitFooter/>
+    <ConduitLayoutFooter />
   </div>
 </template>
 
 <style>
-
 </style>
 
 <script>
-import ConduitHeader from "@/header";
-import ConduitFooter from "@/footer";
+import ConduitLayoutHeader from "./conduit-layout-header";
+import ConduitLayoutFooter from "./conduit-layout-footer";
 export default {
   name: "App",
   components: {
-    ConduitHeader,
-    ConduitFooter
+    ConduitLayoutHeader,
+    ConduitLayoutFooter
   }
 };
 </script>

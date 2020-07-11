@@ -9,31 +9,31 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-9">
-          <ArticlesFeed
+          <ConduitArticlesFeed
             v-bind:feeds="feeds"
             v-bind:selected="selectedFeed"
             v-on:select="onFeedSelected($event)"
-          ></ArticlesFeed>
+          ></ConduitArticlesFeed>
 
-          <ArticlesList v-bind:articles="articles">
-            <ArticleListItem
+          <ConduitArticlesList v-bind:articles="articles">
+            <ConduitArticleListItem
               v-for="article in articles"
               :key="article.slug"
               v-bind:article="article"
             >
-              <ArticlePreview v-bind:article="article">
-                <ArticleMeta v-bind:article="article">
-                  <ButtonsFavorite
+              <ConduitArticlePreview v-bind:article="article">
+                <ConduitArticleMeta v-bind:article="article">
+                  <ConduitButtonsFavorite
                     v-bind:article="article"
                     v-on:favorited="onFavoritedArticle(article)"
-                  ></ButtonsFavorite>
-                </ArticleMeta>
-              </ArticlePreview>
-            </ArticleListItem>
-          </ArticlesList>
+                  ></ConduitButtonsFavorite>
+                </ConduitArticleMeta>
+              </ConduitArticlePreview>
+            </ConduitArticleListItem>
+          </ConduitArticlesList>
         </div>
         <div class="col-md-3">
-          <TagsPopular v-bind:tags="tags" v-on:select="onTagSelected($event)"></TagsPopular>
+          <ConduitTagsPopular v-bind:tags="tags" v-on:select="onTagSelected($event)"></ConduitTagsPopular>
         </div>
       </div>
     </div>
@@ -41,25 +41,25 @@
 </template>
 
 <script>
-import TagsPopular from "./popular-tags";
-import ArticlesFeed from "./articles-feed";
-import HomePageService from "./home-page-service";
-import ArticlesList from "./articles-list";
-import ArticleListItem from "./articles-list-item";
-import ArticlePreview from "./articles-preview";
-import ArticleMeta from "./articles-meta";
-import ButtonsFavorite from "./buttons-favorite";
+import ConduitTagsPopular from "./conduit-tags-popular";
+import ConduitArticlesFeed from "./conduit-articles-feed";
+import ConduitHomePageService from "./conduit-home-page-service";
+import ConduitArticlesList from "./conduit-articles-list";
+import ConduitArticleListItem from "./conduit-articles-list-item";
+import ConduitArticlePreview from "./conduit-articles-preview";
+import ConduitArticleMeta from "./conduit-articles-meta";
+import ConduitButtonsFavorite from "./conduit-buttons-favorite";
 
 export default {
-  name: "home",
+  name: "ConduitHomePage",
   components: {
-    TagsPopular,
-    ArticlesFeed,
-    ArticlesList,
-    ArticleListItem,
-    ArticlePreview,
-    ArticleMeta,
-    ButtonsFavorite
+    ConduitTagsPopular,
+    ConduitArticlesFeed,
+    ConduitArticlesList,
+    ConduitArticleListItem,
+    ConduitArticlePreview,
+    ConduitArticleMeta,
+    ConduitButtonsFavorite
   },
   data() {
     return {
@@ -73,8 +73,8 @@ export default {
     };
   },
   created() {
-    HomePageService.fetchTags().then(tags => (this.tags = tags));
-    HomePageService.fetchArticles({
+    ConduitHomePageService.fetchTags().then(tags => (this.tags = tags));
+    ConduitHomePageService.fetchArticles({
       limit: 10,
       offset: 0,
       feed: { id: "all", name: "Global Feed" }
@@ -88,7 +88,7 @@ export default {
       };
       this.feeds[2] = tagFeed;
       this.selectedFeed = tagFeed.id;
-      HomePageService.fetchArticles({
+      ConduitHomePageService.fetchArticles({
         limit: 10,
         offset: 0,
         feed: tagFeed
@@ -96,7 +96,7 @@ export default {
     },
     onFeedSelected(selectedFeed) {
       this.selectedFeed = selectedFeed.id;
-      HomePageService.fetchArticles({
+      ConduitHomePageService.fetchArticles({
         limit: 10,
         offset: 0,
         feed: selectedFeed

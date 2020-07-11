@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "TagsPopular",
+  name: "ConduitTagsPopular",
   props: ["tags"],
   methods: {
     select(tag) {

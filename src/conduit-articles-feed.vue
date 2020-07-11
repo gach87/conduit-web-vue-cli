@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "ArticlesFeed",
+  name: "ConduitArticlesFeed",
   props: ["feeds", "selected"],
   methods: {
     select(feed) {

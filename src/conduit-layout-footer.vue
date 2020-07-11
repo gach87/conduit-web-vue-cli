@@ -16,6 +16,6 @@
 
 <script>
 export default {
-  name: "ConduitFooter"
+  name: "ConduitLayoutFooter"
 };
 </script>
