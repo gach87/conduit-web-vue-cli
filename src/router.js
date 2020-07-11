@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import ConduitHomePage from "./conduit-home-page";
 
 Vue.use(VueRouter);
 
@@ -10,7 +9,7 @@ const routes = [
     name: "home",
     component: function() {
       return import(
-        /* webpackChunkName: "conduit-home-page" */ "./conduit-home-page.vue"
+        /* webpackChunkName: "conduit-home-page" */ "./conduit-pages-home.vue"
       );
     },
   },

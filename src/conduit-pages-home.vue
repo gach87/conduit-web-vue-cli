@@ -43,7 +43,7 @@
 <script>
 import ConduitTagsPopular from "./conduit-tags-popular";
 import ConduitArticlesFeed from "./conduit-articles-feed";
-import ConduitHomePageService from "./conduit-home-page-service";
+import ConduitHomePageService from "./conduit-pages-home-service";
 import ConduitArticlesList from "./conduit-articles-list";
 import ConduitArticleListItem from "./conduit-articles-list-item";
 import ConduitArticlePreview from "./conduit-articles-preview";
@@ -51,7 +51,7 @@ import ConduitArticleMeta from "./conduit-articles-meta";
 import ConduitButtonsFavorite from "./conduit-buttons-favorite";
 
 export default {
-  name: "ConduitHomePage",
+  name: "ConduitPagesHome",
   components: {
     ConduitTagsPopular,
     ConduitArticlesFeed,
