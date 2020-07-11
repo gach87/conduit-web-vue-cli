@@ -15,22 +15,16 @@
             v-on:select="onFeedSelected($event)"
           ></ConduitArticlesFeed>
 
-          <ConduitArticlesList v-bind:articles="articles">
-            <ConduitArticleListItem
-              v-for="article in articles"
-              :key="article.slug"
-              v-bind:article="article"
-            >
-              <ConduitArticlePreview v-bind:article="article">
-                <ConduitArticleMeta v-bind:article="article">
-                  <ConduitButtonsFavorite
-                    v-bind:article="article"
-                    v-on:favorited="onFavoritedArticle(article)"
-                  ></ConduitButtonsFavorite>
-                </ConduitArticleMeta>
-              </ConduitArticlePreview>
-            </ConduitArticleListItem>
-          </ConduitArticlesList>
+          <div v-for="article in articles" :key="article.slug" v-bind:article="article">
+            <ConduitArticlePreview v-bind:article="article">
+              <ConduitArticleMeta v-bind:article="article">
+                <ConduitButtonsFavorite
+                  v-bind:article="article"
+                  v-on:favorited="onFavoritedArticle(article)"
+                ></ConduitButtonsFavorite>
+              </ConduitArticleMeta>
+            </ConduitArticlePreview>
+          </div>
         </div>
         <div class="col-md-3">
           <ConduitTagsPopular v-bind:tags="tags" v-on:select="onTagSelected($event)"></ConduitTagsPopular>
@@ -44,8 +38,6 @@
 import ConduitTagsPopular from "./conduit-tags-popular";
 import ConduitArticlesFeed from "./conduit-articles-feed";
 import ConduitHomePageService from "./conduit-pages-home-service";
-import ConduitArticlesList from "./conduit-articles-list";
-import ConduitArticleListItem from "./conduit-articles-list-item";
 import ConduitArticlePreview from "./conduit-articles-preview";
 import ConduitArticleMeta from "./conduit-articles-meta";
 import ConduitButtonsFavorite from "./conduit-buttons-favorite";
@@ -55,8 +47,6 @@ export default {
   components: {
     ConduitTagsPopular,
     ConduitArticlesFeed,
-    ConduitArticlesList,
-    ConduitArticleListItem,
     ConduitArticlePreview,
     ConduitArticleMeta,
     ConduitButtonsFavorite
