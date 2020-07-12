@@ -25,6 +25,12 @@
               </ConduitArticleMeta>
             </ConduitArticlePreview>
           </div>
+
+          <ConduitLayoutPagination
+            v-bind:pages="pages"
+            v-bind:selected="selectedPage"
+            v-bind:onSelect="onPageSelected"
+          ></ConduitLayoutPagination>
         </div>
         <div class="col-md-3">
           <ConduitTagsPopular v-bind:tags="tags" v-on:select="onTagSelected($event)"></ConduitTagsPopular>
@@ -41,6 +47,7 @@ import ConduitHomePageService from "./conduit-pages-home-service";
 import ConduitArticlePreview from "./conduit-articles-preview";
 import ConduitArticleMeta from "./conduit-articles-meta";
 import ConduitButtonsFavorite from "./conduit-buttons-favorite";
+import ConduitLayoutPagination from "./conduit-layout-pagination";
 
 export default {
   name: "ConduitPagesHome",
@@ -49,26 +56,35 @@ export default {
     ConduitArticlesFeed,
     ConduitArticlePreview,
     ConduitArticleMeta,
-    ConduitButtonsFavorite
+    ConduitButtonsFavorite,
+    ConduitLayoutPagination
   },
   data() {
     return {
       tags: undefined,
-      feeds: [
-        { id: "personal", name: "Your feed" },
-        { id: "all", name: "Global Feed" }
-      ],
-      selectedFeed: "all",
-      articles: undefined
+      feeds: undefined,
+      selectedFeed: undefined,
+      articles: undefined,
+      selectedPage: undefined,
+      pages: undefined
     };
   },
   created() {
+    this.selectedPage = 1;
+    this.selectedFeed = "all";
+    this.feeds = [
+      { id: "personal", name: "Your feed" },
+      { id: "all", name: "Global Feed" }
+    ];
     ConduitHomePageService.fetchTags().then(tags => (this.tags = tags));
     ConduitHomePageService.fetchArticles({
       limit: 10,
-      offset: 0,
-      feed: { id: "all", name: "Global Feed" }
-    }).then(articles => (this.articles = articles));
+      page: this.selectedPage,
+      feed: this.feeds.find(feed => feed.id === this.selectedFeed)
+    }).then(response => {
+      this.articles = response.data;
+      this.pages = response.meta.pages;
+    });
   },
   methods: {
     onTagSelected(tag) {
@@ -78,22 +94,36 @@ export default {
       };
       this.feeds[2] = tagFeed;
       this.selectedFeed = tagFeed.id;
+      this.selectedPage = 1;
       ConduitHomePageService.fetchArticles({
         limit: 10,
-        offset: 0,
+        page: this.selectedPage,
         feed: tagFeed
       }).then(articles => (this.articles = articles));
     },
     onFeedSelected(selectedFeed) {
       this.selectedFeed = selectedFeed.id;
+      this.selectedPage = 1;
+
       ConduitHomePageService.fetchArticles({
         limit: 10,
-        offset: 0,
+        page: this.selectedPage,
         feed: selectedFeed
       }).then(articles => (this.articles = articles));
     },
     onFavoritedArticle(article) {
       console.log(article);
+    },
+    onPageSelected(page) {
+      ConduitHomePageService.fetchArticles({
+        limit: 10,
+        page: page,
+        feed: this.feeds.find(feed => feed.id === this.selectedFeed)
+      }).then(response => {
+        this.articles = response.data;
+        this.pages = response.meta.pages;
+        this.selectedPage = page;
+      });
     }
   }
 };
