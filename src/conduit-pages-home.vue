@@ -70,60 +70,50 @@ export default {
     };
   },
   created() {
-    this.selectedPage = 1;
-    this.selectedFeed = "all";
-    this.feeds = [
-      { id: "personal", name: "Your feed" },
-      { id: "all", name: "Global Feed" }
-    ];
-    ConduitHomePageService.fetchTags().then(tags => (this.tags = tags));
-    ConduitHomePageService.fetchArticles({
-      limit: 10,
-      page: this.selectedPage,
-      feed: this.feeds.find(feed => feed.id === this.selectedFeed)
-    }).then(response => {
-      this.articles = response.data;
-      this.pages = response.meta.pages;
-    });
+    ConduitHomePageService.init().then(state => this.setState(state));
   },
   methods: {
     onTagSelected(tag) {
-      const tagFeed = {
-        id: tag.toLowerCase(),
-        name: "#" + tag
-      };
-      this.feeds[2] = tagFeed;
-      this.selectedFeed = tagFeed.id;
-      this.selectedPage = 1;
-      ConduitHomePageService.fetchArticles({
-        limit: 10,
-        page: this.selectedPage,
-        feed: tagFeed
-      }).then(articles => (this.articles = articles));
+      ConduitHomePageService.onTagSelected({
+        tag,
+        state: this.getState()
+      }).then(state => this.setState(state));
     },
-    onFeedSelected(selectedFeed) {
-      this.selectedFeed = selectedFeed.id;
-      this.selectedPage = 1;
+    onFeedSelected(feed) {
+      ConduitHomePageService.onFeedSelected({
+        feed,
+        state: this.getState()
+      }).then(state => this.setState(state));
+    },
+    onPageSelected(page) {
+      ConduitHomePageService.onPageSelected({
+        page,
+        state: this.getState()
+      }).then(state => this.setState(state));
+    },
 
-      ConduitHomePageService.fetchArticles({
-        limit: 10,
-        page: this.selectedPage,
-        feed: selectedFeed
-      }).then(articles => (this.articles = articles));
-    },
     onFavoritedArticle(article) {
       console.log(article);
     },
-    onPageSelected(page) {
-      ConduitHomePageService.fetchArticles({
-        limit: 10,
-        page: page,
-        feed: this.feeds.find(feed => feed.id === this.selectedFeed)
-      }).then(response => {
-        this.articles = response.data;
-        this.pages = response.meta.pages;
-        this.selectedPage = page;
-      });
+    getState() {
+      return JSON.parse(
+        JSON.stringify({
+          articles: this.articles,
+          pages: this.pages,
+          tags: this.tags,
+          feeds: this.feeds,
+          selectedFeed: this.selectedFeed,
+          selectedPage: this.selectedPage
+        })
+      );
+    },
+    setState(input) {
+      this.articles = input.articles;
+      this.pages = input.pages;
+      this.tags = input.tags;
+      this.feeds = input.feeds;
+      this.selectedFeed = input.selectedFeed;
+      this.selectedPage = input.selectedPage;
     }
   }
 };
