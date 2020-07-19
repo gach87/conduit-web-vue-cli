@@ -15,16 +15,7 @@
             v-on:select="onFeedSelected($event)"
           ></ConduitArticlesFeed>
 
-          <div v-for="article in state.articles" :key="article.slug" v-bind:article="article">
-            <ConduitArticlePreview v-bind:article="article">
-              <ConduitArticleMeta v-bind:article="article">
-                <ConduitButtonsFavorite
-                  v-bind:article="article"
-                  v-on:favorited="onFavoritedArticle(article)"
-                ></ConduitButtonsFavorite>
-              </ConduitArticleMeta>
-            </ConduitArticlePreview>
-          </div>
+          <ConduitArticlesList v-bind:articles="state.articles" />
 
           <ConduitLayoutPagination
             v-bind:pages="state.pages"
@@ -44,19 +35,15 @@
 import ConduitTagsPopular from "./conduit-tags-popular";
 import ConduitArticlesFeed from "./conduit-articles-feed";
 import ConduitHomePageService from "./conduit-pages-home-service";
-import ConduitArticlePreview from "./conduit-articles-preview";
-import ConduitArticleMeta from "./conduit-articles-meta";
-import ConduitButtonsFavorite from "./conduit-buttons-favorite";
 import ConduitLayoutPagination from "./conduit-layout-pagination";
+import ConduitArticlesList from "./conduit-articles-list";
 
 export default {
   name: "ConduitPagesHome",
   components: {
     ConduitTagsPopular,
     ConduitArticlesFeed,
-    ConduitArticlePreview,
-    ConduitArticleMeta,
-    ConduitButtonsFavorite,
+    ConduitArticlesList,
     ConduitLayoutPagination
   },
   data() {
@@ -94,9 +81,6 @@ export default {
         page,
         state: Object.assign({}, this.state)
       }).then(state => (this.state = Object.assign({}, state)));
-    },
-    onFavoritedArticle(article) {
-      console.log(article);
     }
   }
 };
